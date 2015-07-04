@@ -4,40 +4,28 @@ set -e
 
 # Need to initialize?
 if [ ! -e /.initialized ]; then
-    if [ -z $AFP_LOGIN ]; then
-        echo "no AFP_LOGIN specified!"
-        exit 1
+    if [ -z $USER ]; then
+        echo "no USER specified, using default value ('admin')"
+        USER="admin"
     fi
 
-    if [ -z $AFP_PASSWORD ]; then
-        echo "no AFP_PASSWORD specified!"
-        exit 1
+    if [ -z $PASSWORD ]; then
+        echo "no PASSWORD specified, using default value ('admin')"
+        PASSWORD="admin"
     fi
 
-    if [ -z $AFP_NAME ]; then
-        echo "no AFP_NAME specified!"
-        exit 1
+    if [ -z $IP_WHITELIST ]; then
+        echo "no IP_WHITELIST specified, using default value ('*.*.*.*')"
+        IP_WHITELIST="*.*.*.*"
     fi
 
-    # Add the user
-    useradd $AFP_LOGIN -M
-    echo $AFP_LOGIN:$AFP_PASSWORD | chpasswd
+    # Make a copy of default config
+    cp /home/transmission/.config/transmission-daemon/settings.json /home/transmission/.config/transmission-daemon/settings.json.bak
 
-    echo "[Global]
-	mimic model = Xserve
-	log file = /var/log/afpd.log
-	log level = default:warn
-	zeroconf = no
-
-[${AFP_NAME}]
-    path = /timemachine
-    time machine = yes
-    valid users = ${AFP_LOGIN}" >> /usr/local/etc/afp.conf
-
-    if [ -n $AFP_SIZE_LIMIT ]; then
-        echo "
-	vol size limit = ${AFP_SIZE_LIMIT}" >> /usr/local/etc/afp.conf
-    fi
+    # Make the changes
+    sed -i "s/\"rpc-username\": \"user\"/\"rpc-username\": \"${USER}\"/g" /home/transmission/.config/transmission-daemon/settings.json
+    sed -i "s/\"rpc-password\": \"pass\"/\"rpc-password\": \"${PASSWORD}\"/g" /home/transmission/.config/transmission-daemon/settings.json
+    sed -i "s/\"rpc-whitelist\": \"*.*.*.*\"/\"rpc-whitelist\": \"${IP_WHITELIST}\"/g" /home/transmission/.config/transmission-daemon/settings.json
 
     touch /.initialized
 fi
