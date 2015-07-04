@@ -2,7 +2,7 @@
 
 A docker image to run the latest version of **Transmission BitTorrent client** inside a container.
 
-The current built image has the *version 2.84* of **Transmission client*.
+The current built image has the *version 2.84* of Transmission client.
 
 ## Installation
 
