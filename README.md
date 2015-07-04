@@ -14,9 +14,9 @@ To download the docker container and execute it, simply run:
 
 The environment variables available on this Docker image are:
 
-* **USER.** The username used to login into the control panel and remote control applications. *Default: admin*.
-* **PASSWORD.** The pasword used to login into the control panel and remote control applications. *Default: admin*.
-* **IP_WHITELIST.** The list of IPs that are allowed to connect with the `transmission` daemon to control it (via web or remote application). *Default: \*.\*.\*.\**.
+* **USER.** The username used to login into the control panel and remote control applications. Default: admin.
+* **PASSWORD.** The pasword used to login into the control panel and remote control applications. Default: admin.
+* **IP_WHITELIST.** The list of IPs that are allowed to connect with the `transmission` daemon to control it (via web or remote application). Default: \*.\*.\*.\*.
 
 These configuration variables should be passed during the first run because there are readed only once to initialize the container.
 
