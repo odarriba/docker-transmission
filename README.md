@@ -8,7 +8,7 @@ The current built image has the *version 2.84* of Transmission client.
 
 To download the docker container and execute it, simply run:
 
-`sudo docker run -h transmission --name transmission -e USER=<YOUR_USER> -e PASSWORD=<YOUR_PASS> -e IP_WHITELIST=<IPS_ALLOWED> -d -v /route/to/your/downloads:/downloads -t -i -p 9091:9091 -p 51413/udp:51413/udp -p 51413/tcp:51413/tcp odarriba/transmission`
+`sudo docker run -h transmission --name transmission -e USER=<YOUR_USER> -e PASSWORD=<YOUR_PASS> -e IP_WHITELIST=<IPS_ALLOWED> -d -v /route/to/your/downloads:/downloads -t -i -p 9091:9091 -p 51413:51413/udp -p 51413:51413/tcp odarriba/transmission`
 
 ### Configuration
 

@@ -23,7 +23,9 @@ COPY config/transmission-daemon /etc/init.d/transmission-daemon
 RUN chmod +x /etc/init.d/transmission-daemon && \
 	chown root:root /etc/init.d/transmission-daemon && \
 	adduser --disabled-password transmission && \
-	mkdir -p /home/transmission/.config/transmission-daemon/
+	mkdir -p /home/transmission/.config/transmission-daemon/ && \
+	mkdir -p /downloads && \
+	chown -R transmission:transmission /downloads
 
 COPY config/settings.json /home/transmission/.config/transmission-daemon/settings.json
 COPY start_service.sh /start_service.sh
