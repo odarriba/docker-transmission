@@ -30,7 +30,6 @@ RUN chmod +x /etc/init.d/transmission-daemon && \
 COPY config/settings.json /home/transmission/.config/transmission-daemon/settings.json
 COPY start_service.sh /start_service.sh
 
-
 VOLUME ["/downloads"]
 
 EXPOSE 9091 51413/tcp 51413/udp

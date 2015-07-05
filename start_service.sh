@@ -27,6 +27,9 @@ if [ ! -e /.initialized ]; then
     sed -i "s/\"rpc-password\": \"pass\"/\"rpc-password\": \"${PASSWORD}\"/g" /home/transmission/.config/transmission-daemon/settings.json
     sed -i "s/\"rpc-whitelist\": \"*.*.*.*\"/\"rpc-whitelist\": \"${IP_WHITELIST}\"/g" /home/transmission/.config/transmission-daemon/settings.json
 
+    
+    chown -R transmission:transmission /home/transmission/.config/transmission-daemon/
+
     touch /.initialized
 fi
 
