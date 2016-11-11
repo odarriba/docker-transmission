@@ -1,36 +1,26 @@
-FROM ubuntu:14.04
+FROM ubuntu:16.04
 MAINTAINER Óscar de Arriba <odarriba@gmail.com>
+
+ENV DEBIAN_FRONTEND noninteractive
 
 # Install transmission
 RUN apt-get update && \
-	apt-get dist-upgrade -y && \
-    apt-get install build-essential automake autoconf libtool pkg-config intltool libcurl4-openssl-dev \
-    	libglib2.0-dev libevent-dev libminiupnpc-dev libappindicator-dev wget -y && \
+	apt-get dist-upgrade -y -qq && \
+		apt-get install transmission-daemon -y -qq && \
     apt-get clean && \
     rm -rf /tmp/*
 
-WORKDIR /tmp
+# Create directories and so on
+RUN mv /var/lib/transmission-daemon/info /config && \
+	ln -s /config /var/lib/transmission-daemon/info && \
+	mkdir /config_original && \
+	sed -i '/USER=debian_transmission/c\USER=root' /etc/init.d/transmission-daemon &&\
+	mkdir -p /downloads
 
-RUN wget http://download.transmissionbt.com/files/transmission-2.84.tar.xz && \
-	tar xf transmission-2.84.tar.xz && \
-	cd transmission-2.84 && \
-	./configure -q --enable-daemon --disable-mac && \
-	make -s && \
-	make install
-
-COPY config/transmission-daemon /etc/init.d/transmission-daemon
-
-RUN chmod +x /etc/init.d/transmission-daemon && \
-	chown root:root /etc/init.d/transmission-daemon && \
-	adduser --disabled-password transmission && \
-	mkdir -p /home/transmission/.config/transmission-daemon/ && \
-	mkdir -p /downloads && \
-	chown -R transmission:transmission /downloads
-
-COPY config/settings.json /home/transmission/.config/transmission-daemon/settings.json
+COPY config/settings.json /config_original/settings.json
 COPY start_service.sh /start_service.sh
 
-VOLUME ["/downloads"]
+VOLUME ["/downloads", "/config"]
 
 EXPOSE 9091 51413/tcp 51413/udp
 
