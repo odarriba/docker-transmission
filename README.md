@@ -8,30 +8,19 @@ The current built image has the *version 2.84* of Transmission client.
 
 To download the docker container and execute it, simply run:
 
-`sudo docker run -h transmission --name transmission -e USER=<YOUR_USER> -e PASSWORD=<YOUR_PASS> -e IP_WHITELIST=<IPS_ALLOWED> -d -v /route/to/your/downloads:/downloads -t -i -p 9091:9091 -p 51413:51413/udp -p 51413:51413/tcp odarriba/transmission`
+`sudo docker run -h transmission --name transmission -d -v /route/to/your/downloads:/downloads -v /route/to/your/config_dir:/config -t -i -p 9091:9091 -p 51413:51413/udp -p 51413:51413/tcp odarriba/transmission`
 
 ## Configuration
 
-The environment variables available on this Docker image are:
+The default config of the container is placed at `/config` directory inside the container. 
 
-* **USER.** The username used to login into the control panel and remote control applications. Default: admin.
-* **PASSWORD.** The pasword used to login into the control panel and remote control applications. Default: admin.
-* **IP_WHITELIST.** The list of IPs that are allowed to connect with the `transmission` daemon to control it (via web or remote application). Default: '\*.\*.\*.\*'.
+If you hace attached a volume to that path, you can modify your settings.json as you wish. Otherwise, you can attach the container and modify the file from inside.
 
-These configuration variables should be passed during the first run because there are readed only once to initialize the container.
-
-If you want to customize your copy, you can attach to the docker container and edit the settings file located at `/home/transmission/.config/transmission-daemon/settings.json`.
+Default credentials for web access are **user** as the user and **pass** as the password.
 
 ## Auto start the service
 
-This repository contains a script to run the container at boot time **in Ubuntu-based distros**, but **it requires that the container have been run manually at least one time**.
-
-To install the script, just execute `sudo cp config/transmission.conf /etc/init/transmission.conf`.
-
-* To start the service: `sudo service transmission start`
-* To stop the service: `sudo service transmission stop`
-
-**Note:** when you stop the service, the container keeps running. Yo must execute `sudo docker stop transmission`in order to stop the server.
+To auto start the container, use the *restart* option when you create the container.
 
 ## Usage
 
